@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <!-- Modal Tambah Barang-->
+     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/tambahbarang" method="post">
+                        <input type="text" hidden id="id_jenisBarang" name="Id_JenisBarang" value="<%= idJ %>">
+                        Nama Barang
+                        <input type="text" id="Nama_barang" name="Nama_barang" onchange="Fungsi_Barang()" class="form-control">
+                        Harga
+                        <input type="text" id="harga" name="harga" onchange="Fungsi_Barang()" class="form-control">
+                        Stock
+                        <input type="text" id="stock" name="stock" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="save" style="display: none;">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Transaksi -->
+    <div class="modal fade" id="modalBarang" tabindex="-1" aria-labelledby="modalBarangLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalBarangLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/tambahTransaksi" method="post">
+                        <input type="text" name="barang_id" id="barang_id" hidden>
+                        <input type="text" name="harga" id="harga" hidden>
+                        <input type="text" name="total" id="total" hidden>
+                        <input type="text" id="Stock" name="Stock">
+                        <input type="text" id="new_stock" name="new_stock">
+                        Masukan jumlah barang
+                        <input type="text" name="jumlah" id="jumlah" class="form-control" onchange="multiFungsi()">
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cancel Transaksi -->
+    <div class="modal fade" id="modalCancel" tabindex="-1" aria-labelledby="modalCancelLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalCancelLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/cancelTransaksi" method="post">
+                        <input type="text" name="id_transaksi" id="id_transaksi">
+                        <input type="text" name="barang_id2" id="barang_id2">
+                        <input type="text" name="stockBaru" id="stockBaru" >
+                       
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
