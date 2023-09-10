@@ -10,7 +10,9 @@ const {
     tambahbarang, 
     tambahTransaksi,
     cancel,
-    editJenis
+    editJenis,
+    shop,
+    editBarang
 } = require('../controller/JenisBarang.js');
 
 router.get('/login', login);
@@ -24,5 +26,7 @@ router.post('/tambahbarang', tambahbarang);
 router.post('/tambahTransaksi', tambahTransaksi);
 router.post('/cancelTransaksi', cancel);
 router.post('/editJenis', editJenis);
+router.post('/editBarang', editBarang);
+router.get('/shop/:Id_JenisBarang', shop);
 
 module.exports = router;

@@ -60,6 +60,14 @@ const hapusJenisBarang = (req, res) => {
     res.redirect("back");
   });
 };
+const hapusTransaksi = (req, res) => {
+  const id = req.params.id_barang;
+  const sql = "DELETE FROM transaksi WHERE id_barang = ?";
+  db.query(sql, id, (error, result) => {
+    if (error) throw error;
+    res.redirect("back");
+  });
+};
 
 const tambahbarang = (req, res) => {
   const newStock = req.body.stock;
@@ -101,6 +109,22 @@ const editJenis = (req, res) => {
     res.redirect("back");
   });
 };
+const shop = (req, res) => {
+  const id = req.params.Id_JenisBarang;
+  const sql = `SELECT * FROM barang WHERE Id_JenisBarang = ('${id}')`;
+  db.query(sql, (error, result) => {
+    if (error) throw error;
+    const Barang = result;
+    res.render("shop", { Barang });
+  });
+};
+const editBarang = (req, res) => {
+  const sql = `UPDATE barang SET Nama_barang = '${req.body.nama_Ebarang}', harga = '${req.body.harga_Ebarang}' WHERE id_barang = ${req.body.id_Ebarang}`;
+  db.query(sql, (error, result) => {
+    if (error) throw error;
+    res.redirect("back");
+  });
+};
 module.exports = {
   getMarket,
   tambahJenis,
@@ -111,4 +135,6 @@ module.exports = {
   tambahTransaksi,
   cancel,
   editJenis,
+  shop,
+  editBarang,
 };
