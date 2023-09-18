@@ -71,7 +71,8 @@ const hapusTransaksi = (req, res) => {
 
 const tambahbarang = (req, res) => {
   const newStock = req.body.stock;
-  const sql = `INSERT INTO barang(Nama_barang, harga, Id_JenisBarang, stock, new_stock) VALUES ('${req.body.Nama_barang}',' ${req.body.harga}','${req.body.Id_JenisBarang}','${req.body.stock}','${newStock}') `;
+  const image = req.file ? req.file.filename : null;
+  const sql = `INSERT INTO barang(Nama_barang, harga, Id_JenisBarang, stock, new_stock, image) VALUES ('${req.body.Nama_barang}',' ${req.body.harga}','${req.body.Id_JenisBarang}','${req.body.stock}','${newStock}', '${image}') `;
   db.query(sql, (error, result) => {
     if (error) throw error;
     res.redirect("back");

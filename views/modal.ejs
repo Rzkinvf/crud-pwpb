@@ -15,7 +15,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/tambahbarang" method="post">
+                    <form action="/tambahbarang" method="post" enctype="multipart/form-data">
                         <input type="text" hidden id="id_jenisBarang" name="Id_JenisBarang" value="<%= idJ %>">
                         Nama Barang
                         <input type="text" id="Nama_barang" name="Nama_barang" onchange="Fungsi_Barang()" class="form-control">
@@ -23,6 +23,10 @@
                         <input type="text" id="harga" name="harga" onchange="Fungsi_Barang()" class="form-control">
                         Stock
                         <input type="text" id="stock" name="stock" class="form-control">
+                        <div class="mb-3">
+                            <label for="formFileSm" class="form-label">Small file input example</label>
+                            <input class="form-control form-control-sm" id="formFileSm" type="file" name="photo">
+                          </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
