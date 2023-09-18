@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { login, register } = require("../controller/auth.js");
+const { login, register, registerasi } = require("../controller/auth.js");
 const {
   getMarket,
   tambahJenis,
@@ -28,6 +28,7 @@ const upload = multer({storage})
 
 router.get("/login", login);
 router.get("/register", register);
+router.post("/registerasi", registerasi);
 router.get("/", getMarket);
 router.post("/tambahJenis", tambahJenis);
 router.get("/hapusJenis/:Id_JenisBarang", hapusJenis);
