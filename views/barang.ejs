@@ -11,14 +11,40 @@
 </head>
 
 <body> 
-    <a href=" /shop/<%= idJ %>">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container" style="width: 100cqmax;">
+          <a class="navbar-brand" href="/">market</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-item nav-link" href="/login">login</a>
+              <a class="nav-item nav-link" href="/register">register</a>
+              <a class="nav-item nav-link" href="/logout">logout</a>
+              <a href=" /shop/<%= idJ %>">
 
-        <i class="fa-solid fa-shop fa-beat fa-lg" style="color: #d373be; margin: 1rem;"></i>
-    </a>
+                <i class="fa-solid fa-shop fa-beat fa-lg" style="color: #d373be; margin: 1rem;"></i>
+            </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    
     <div class="container mt-5 ">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Add Barang
-        </button>
+        <% if (user) { %>
+            <h3>
+                saldo anda : <%= formatSaldo(user.saldo) %>
+            </h3>
+                <% if (user.role == 1) { %>
+                    
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Add Barang
+                        </button>
+                 <%   } %>
+               <% } %>
         <div class="row ">
 
 
@@ -65,29 +91,36 @@
                                 <% } %>
                             </td>
                             <td>
-                                <a href="/hapusbarang/<%= a.id_barang %>" class="bg-danger badge"
-                                    onclick="return confirm('polontong dihapus')">Hapus</a>
-
-                                <button type="button" class="bg-warning badge" data-bs-toggle="modal"
-                                    data-bs-target="#modalEdit"
-                                    onclick="edit('<%= a.id_barang %>', '<%= a.harga %>',' <%= a.Nama_barang %>')">
-                                    Pilih
-                                </button>
-                            </td>
-                        </tr>
-                        <% } %>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <!-- Button trigger modal -->
-                <% if(transaksi.length >= 0){ %>
-                saldo Anda <div id="saldo"></div>
-                    <% } %>
-                <table class="table table-hover  table-dark pt-2 ">
-                    <tr>
-                        <th>Id Transaksi</th>
-                        <th>Nama Barang</th>
-                        <th>jumlah</th>
+                                <% if (user) { %>
+                                    <% if (user.role == 1) { %>
+                                        
+                                        <a href="/hapusbarang/<%= a.id_barang %>" class="bg-danger badge"
+                                            onclick="return confirm('polontong dihapus')">Hapus</a>
+                                            
+                                            <button type="button" class="bg-warning badge" data-bs-toggle="modal"
+                                            data-bs-target="#modalEdit"
+                                            onclick="edit('<%= a.id_barang %>', '<%= a.harga %>',' <%= a.Nama_barang %>')">
+                                            edit
+                                            </button>
+                                            <% } else { %>
+                                                -
+                                            <% } %>
+                                        <% } %>
+                                            </td>
+                                            </tr>
+                                            <% } %>
+                                            </table>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- Button trigger modal -->
+                                                <% if(transaksi.length >= 0){ %>
+                                                    saldo Anda <div id="saldo"></div>
+                                                    <% } %>
+                                                    <table class="table table-hover  table-dark pt-2 ">
+                                                        <tr>
+                                                            <th>Id Transaksi</th>
+                                                            <th>Nama Barang</th>
+                                                            <th>jumlah</th>
                         <th>total harga</th>
 
                         <th>bayar</th>

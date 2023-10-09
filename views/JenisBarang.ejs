@@ -10,13 +10,36 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container" style="width: 100cqmax;">
+          <a class="navbar-brand" href="/">market</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-item nav-link" href="/login">login</a>
+              <a class="nav-item nav-link" href="/register">register</a>
+              <a class="nav-item nav-link" href="/logout">logout</a>
+            </div>
+          </div>
+        </div>
+      </nav>
     <div class="container mt-5">
-        <a href="/login">Login</a>
         <div class="col-md-8">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Launch demo modal
-            </button>
+           <% if (user) { %>
+            <h3>
+                selamat datang <%= user.username %>
+            </h3>
+                <% if (user.role == 1) { %>
+                    
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        klik untuk mengisi data
+                        </button>
+                  <%  } %>
+               <% } %>
 
 
             <table class="table table-hover  table-dark ">
@@ -25,7 +48,7 @@
                     <th>Jenis Barang</th>
                     <th>Pilih</th>
                     <th>Action </th>
-                    <th>Edit </th>
+                    
                 </tr>
                 <% for(let a of jenis){ %>
                     <tr>
@@ -36,19 +59,27 @@
                             <%= a.jenisBarang %>
                         </td>
                         <td>
-                            <a href="/pilihBarang/<%= a.Id_JenisBarang %>" class="bg-success badge" >Pilih</a>
+                            <a href="/pilihBarang/<%= a.Id_JenisBarang %>" class="bg-success badge">Pilih</a>
                         </td>
                         <td>
-                            <a href="/hapusJenis/<%= a.Id_JenisBarang %>" class="bg-danger badge" onclick="return confirm('polontong dihapus')">Hapus</a>
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal1" onclick="edit('<%= a.jenisBarang %>','<%= a.Id_JenisBarang %>')">Edit</button>
+                            <% if (user) { %>
+                                <% if (user.role == 1) { %>
+
+                            <a href="/hapusJenis/<%= a.Id_JenisBarang %>" class="bg-danger badge" onclick="return confirm('yakin hapus <%= a.jenisBarang %> denagn id Id_JenisBarang ?')">Hapus</a>
+                        
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal1"
+                                onclick="edit('<%= a.jenisBarang %>','<%= a.Id_JenisBarang %>')">Edit</button>
+                            <% } else { %>
+                                -
+                                <% } %>
+                                    <% } %>
                         </td>
                     </tr>
                     <% } %>
             </table>
         </div>
-    </div> 
+    </div>
 
     <!-- Modal Tambah Jenis -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -78,16 +109,16 @@
                     <h1 class="modal-title fs-5" id="exampleModal1Label">Modal title</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            <form action="/editJenis" method="post">
-                <div class="modal-body">
+                <form action="/editJenis" method="post">
+                    <div class="modal-body">
                         <input type="text" id="Jenis" name="Jeniss" class="form-control">
                         <input type="text" id="id_jenis" name="id_jeniss" class="form-control">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

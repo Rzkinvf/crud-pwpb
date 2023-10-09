@@ -1,14 +1,41 @@
 const { error } = require("console");
 var db = require("../Connect");
+
 const getMarket = (req, res) => {
   const sql = "SELECT * FROM jenisbarang";
+  // secara default database dlm mysql berbentuk array
+  // maka ubah menjadi JSON
   db.query(sql, (error, result) => {
-    // secara default database dlm mysql berbentuk array
-    // maka ubah menjadi JSON
     const JenisBarang = JSON.parse(JSON.stringify(result));
-    res.render("JenisBarang", { jenis: JenisBarang });
+    if (req.session.user) {
+      const sql = `SELECT * FROM user WHERE username = '${req.session.user.username}'`;
+      db.query(sql, (error, result) => {
+        if (error) throw error;
+        const user = result[0];
+        console.log(user);
+        const formatSaldo = (rupiah) => {
+          return rupiah.toLocaleString("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0,
+          });
+        };
+        res.render("JenisBarang", {
+          jenis: JenisBarang,
+          user: user,
+          formatSaldo,
+        });
+      });
+    } else {
+      
+      res.render("JenisBarang", {
+        jenis: JenisBarang,
+        user: "",
+      });
+    }
   });
 };
+
 const tambahJenis = (req, res) => {
   const sql = `INSERT INTO jenisbarang(jenisBarang) VALUES
     ('${req.body.jenisBarang}')`;
@@ -47,7 +74,30 @@ const pilihBarang = (req, res) => {
             maximumFractionDigits: 0,
           });
         };
-        res.render("barang", { bar: Barang, idJ: id, transaksi, formatSaldo });
+        if (req.session.user) {
+          const sql = `SELECT * FROM user WHERE username = '${req.session.user.username}'`;
+          db.query(sql, (error, result) => {
+            if (error) throw error;
+            const user = result[0];
+            console.log(user);
+            res.render("barang", {
+               bar: Barang, 
+               idJ: id, 
+               transaksi, 
+               formatSaldo,
+              user: user,
+              });
+          });
+        } else {
+          
+          res.render("barang", {
+             bar: Barang, 
+             idJ: id, 
+             transaksi, 
+             formatSaldo,
+            user: "", });
+        }
+        
       });
     });
   });
@@ -79,15 +129,22 @@ const tambahbarang = (req, res) => {
   });
 };
 const tambahTransaksi = (req, res) => {
-  const sql = `INSERT INTO transaksi(id_barang, jumlah, total_harga) VALUES ('${req.body.barang_id}', '${req.body.jumlah}', '${req.body.total}')`;
-  db.query(sql, (error, result) => {
-    if (error) throw error;
-    const sql2 = `UPDATE barang SET new_stock = ${req.body.new_stock} WHERE id_barang = ${req.body.barang_id}`;
-    db.query(sql2, (error, result) => {
+  if (!req.session.user) {
+    return res.render("login", {
+      pesan: "Anda harus login terlebih dahulu",
+      clas: "danger",
+    })
+  } else {
+    const sql = `INSERT INTO transaksi(id_barang, jumlah, total_harga) VALUES ('${req.body.barang_id}', '${req.body.jumlah}', '${req.body.total}')`;
+    db.query(sql, (error, result) => {
       if (error) throw error;
-      res.redirect("back");
+      const sql2 = `UPDATE barang SET new_stock = ${req.body.new_stock} WHERE id_barang = ${req.body.barang_id}`;
+      db.query(sql2, (error, result) => {
+        if (error) throw error;
+        res.redirect("back");
+      });
     });
-  });
+  }
 };
 
 // console.log(req.body.stockBaru)

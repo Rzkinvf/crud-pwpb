@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { login, register, registerasi } = require("../controller/auth.js");
+const { login, register, registerasi, auth } = require("../controller/auth.js");
 const {
   getMarket,
   tambahJenis,
@@ -26,10 +26,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({storage})
 
-router.get("/login", login);
+router.get("/Market", getMarket);
+router.get("/", getMarket);
+router.post("/auth", auth)
 router.get("/register", register);
 router.post("/registerasi", registerasi);
-router.get("/", getMarket);
+router.get("/login", login);
+router.get("/logout", login);
 router.post("/tambahJenis", tambahJenis);
 router.get("/hapusJenis/:Id_JenisBarang", hapusJenis);
 router.get("/pilihBarang/:Id_JenisBarang", pilihBarang);
