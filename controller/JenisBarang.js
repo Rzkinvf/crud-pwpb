@@ -58,6 +58,14 @@ const pilihBarang = (req, res) => {
   const sql = `SELECT * FROM barang WHERE Id_JenisBarang = ('${id}')`;
   db.query(sql, (error, result) => {
     if (error) throw error;
+    total = result;
+    const formatSaldo = (rupiah) => {
+      return rupiah.toLocaleString("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0,
+      });
+    };
     const Barang = JSON.parse(JSON.stringify(result));
     const sql2 = `SELECT * FROM transaksi JOIN barang ON transaksi.id_barang = barang.id_barang`;
     db.query(sql2, (error, result) => {
@@ -66,27 +74,32 @@ const pilihBarang = (req, res) => {
       const sql3 = `SELECT SUM (total_harga) AS total FROM transaksi JOIN barang ON transaksi.id_barang = barang.id_barang`;
       db.query(sql3, (error, result) => {
         if (error) throw error;
-        total = result;
-        const formatSaldo = (rupiah) => {
-          return rupiah.toLocaleString("id-ID", {
-            style: "currency",
-            currency: "IDR",
-            maximumFractionDigits: 0,
-          });
-        };
+
         if (req.session.user) {
           const sql = `SELECT * FROM user WHERE username = '${req.session.user.username}'`;
           db.query(sql, (error, result) => {
             if (error) throw error;
             const user = result[0];
             console.log(user);
-            res.render("barang", {
-               bar: Barang, 
-               idJ: id, 
-               transaksi, 
-               formatSaldo,
-              user: user,
-              });
+            const sql2 = `SELECT * FROM transaksi JOIN barang ON transaksi.id_barang = barang.id_barang WHERE status = 0 AND id_user = ${req.session.user.id} `;
+            db.query(sql2, (error, result2) => {
+              const transaksi = result2;
+
+              const sql3 = `SELECT SUM(total_harga) AS total FROM transaksi JOIN barang ON transaksi.id_barang = barang.id_barang WHERE status = 0 AND id_user = ${req.session.user.id}`;
+              db.query(sql3,(error,result3) => {
+                if (error) throw error;
+                total = result3
+                console.log(user);
+                res.render("barang", {
+                   bar: Barang, 
+                   idJ: id, 
+                   transaksi, 
+                   formatSaldo,
+                   total,
+                    user: user,
+                  });
+              })
+            })
           });
         } else {
           
@@ -95,7 +108,8 @@ const pilihBarang = (req, res) => {
              idJ: id, 
              transaksi, 
              formatSaldo,
-            user: "", });
+             total,
+             user: "", });
         }
         
       });
@@ -135,7 +149,7 @@ const tambahTransaksi = (req, res) => {
       clas: "danger",
     })
   } else {
-    const sql = `INSERT INTO transaksi(id_barang, jumlah, total_harga) VALUES ('${req.body.barang_id}', '${req.body.jumlah}', '${req.body.total}')`;
+    const sql = `INSERT INTO transaksi(id_barang, jumlah, total_harga, id_user, status) VALUES ('${req.body.barang_id}', '${req.body.jumlah}', '${req.body.total}', '${req.session.user.id}', '0')`;
     db.query(sql, (error, result) => {
       if (error) throw error;
       const sql2 = `UPDATE barang SET new_stock = ${req.body.new_stock} WHERE id_barang = ${req.body.barang_id}`;

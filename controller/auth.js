@@ -1,4 +1,4 @@
-const { error } = require("console");
+const { error, log } = require("console");
 const db = require("../Connect");
 const bcrypt = require("bcrypt");
 
@@ -32,9 +32,10 @@ const registerasi = (req, res) => {
         return res.render("register", {
             clas: "danger",
             pesan: "password anda tidak sesuai",
+            username: req.body.username,
         })
     }
-    bcyrpt.hash(password,10, (errorhash, hash) => {
+    bcrypt.hash(password,10, (errorhash, hash) => {
         if (errorhash) throw errorhash 
         const min = 100000;
         const max = 999999;
@@ -45,7 +46,7 @@ const registerasi = (req, res) => {
             res.render(`register`,{
                 clas: 'success',
                 pesan:'berhasil',
-                username:'',
+                // username:'',
             });
         })
     });
@@ -58,7 +59,7 @@ const auth = (req, res) => {
     return res.render('login', {
       pesan: "Username dan password tidak boleh kosong",
       clas: "danger",
-      username: "",
+      // username: "",
     });
   }
   const sql = `SELECT * FROM user WHERE username  = '${username}'`;
@@ -68,14 +69,14 @@ const auth = (req, res) => {
       return res.render("login", {
         pesan: "Username tidak ada",
         clas: "danger",
-        username: "",
+        // username: "",
       });
     }
     // Jika user ditemukan
     const user = result[0];
-    bcrypt.compare(password, user.password, (bcrypterror, bcryptRes) => {
+    bcrypt.compare(password, user.password, (bcrypterror, bcryptRespon) => {
       if (bcrypterror) throw bcrypterror;
-      if (!bcryptRes) {
+      if (!bcryptRespon) {
         return res.render("login", {
           pesan: "Password salah",
           clas: "danger",
