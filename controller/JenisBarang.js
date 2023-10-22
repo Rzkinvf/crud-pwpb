@@ -197,6 +197,20 @@ const editBarang = (req, res) => {
     res.redirect("back");
   });
 };
+
+const bayar = (req, res) =>{
+  if (req.session.user) {
+    const sql = `UPDATE user SET saldo = '${req.body.u_saldo}' WHERE id_user = ${req.session.user.id}`;
+    db.query(sql, (error, result) => {
+      if (error) throw error;
+      res.redirect("back");
+      const sql = `UPDATE transaksi AS t INNER JOIN barang AS b ON t.id_barang = b.id_barang SET t.status = '1', b.stock = ${req.body.B_stock} WHERE t.id_transaksi = ${req.body.B_id_transaksi};`;
+      db.query(sql, (error, result) => {
+        if (error) throw error;
+    })
+    })
+  }
+}
 module.exports = {
   getMarket,
   tambahJenis,
@@ -209,4 +223,5 @@ module.exports = {
   editJenis,
   shop,
   editBarang,
+  bayar,
 };

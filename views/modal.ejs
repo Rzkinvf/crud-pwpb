@@ -91,7 +91,7 @@
         </div>
     </div>
 
-    <!-- Modal Edit -->
+    <!-- Modal Edit Barang-->
     <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEditBarang" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -106,6 +106,33 @@
                         <input type="text" id="nama_Ebarang" name="nama_Ebarang"  class="form-control">
                         Harga
                         <input type="text" id="harga_Ebarang" name="harga_Ebarang" class="form-control">
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Bayar Transaksi -->
+    <div class="modal fade" id="modalBayar" tabindex="-1" aria-labelledby="modalBayarTransaksi" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalBayarTransaksi">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/bayar" method="post">
+                        <h3 id="info"></h3>
+                        <input type="text" id="u_saldo" name="u_saldo" hidden>
+                        <input type="text" id="B_id_barang" name="B_id_barang"  class="form-control" hidden>
+                        <input type="text" id="B_id_transaksi" name="B_id_transaksi" class="form-control" hidden>
+                        <input type="text" id="BT_harga" name="BT_harga" class="form-control" hidden>
+                        <input type="text" id="B_stock" name="B_stock" class="form-control" >
+
                     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

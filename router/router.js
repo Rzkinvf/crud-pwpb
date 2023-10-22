@@ -13,6 +13,7 @@ const {
   editJenis,
   shop,
   editBarang,
+  bayar,
 } = require("../controller/JenisBarang.js");
 const multer = require("multer");
 
@@ -42,6 +43,7 @@ router.post("/tambahTransaksi", tambahTransaksi);
 router.post("/cancelTransaksi", cancel);
 router.post("/editJenis", editJenis);
 router.post("/editBarang", editBarang);
+router.post("/bayar", bayar);
 router.get("/shop/:Id_JenisBarang", shop);
 
 module.exports = router;

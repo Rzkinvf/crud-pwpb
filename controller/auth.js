@@ -10,7 +10,7 @@ const register = (req, res) => {
 };
 const logout = (req,res) =>{
   req.session.destroy();
-  res.render("login",{
+  res.render("jenisBarang",{
     pesan: "berhsil logout",
     clas: "success",
     username:"",
@@ -74,6 +74,7 @@ const auth = (req, res) => {
     }
     // Jika user ditemukan
     const user = result[0];
+    // console.log(password);
     bcrypt.compare(password, user.password, (bcrypterror, bcryptRespon) => {
       if (bcrypterror) throw bcrypterror;
       if (!bcryptRespon) {
@@ -82,12 +83,12 @@ const auth = (req, res) => {
           clas: "danger",
         });
       }
+    });
       req.session.user = {
         id: user.id_user,
         username: user.username,
       };
       res.redirect("/Market");
-    });
   });
 }
 module.exports = { login, register, registerasi, auth, logout };
